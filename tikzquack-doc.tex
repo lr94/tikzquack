@@ -1,0 +1,109 @@
+\errorcontextlines=99999
+\documentclass[a4paper,10pt,parskip=half,numbers=noenddot]{scrartcl}
+
+\usepackage{hyperref}
+\usepackage{xspace}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{needspace}
+\usepackage[most]{tcolorbox}
+\usepackage{tikzquack}
+
+\newcommand\pkg[1]{\textsf{#1}}
+\newcommand\cs[1]{\texttt{\textbackslash#1}}
+
+\newcommand{\pkgname}{\pkg{tikzquack}\xspace}
+
+
+\lstdefinestyle{myexample}{
+	language=[LaTeX]TeX,
+	basicstyle=\ttfamily\small,
+	keywordstyle=\color{blue!60!black},
+	commentstyle=\color{green!60!black},
+	tabsize=4
+}
+
+\newtcblisting{example}{
+	listing and text,
+	listing options={
+		style=myexample
+	},
+	colback=white,
+	colframe=black!75,
+	colbacklower=white
+}
+
+\title{Il pacchetto \pkgname}
+\author{Luca Robbiano\\\url{https://github.com/lr94/tikzquack}}
+\date{v1.0, 2026/11/07}
+
+\begin{document}
+\maketitle
+
+Un piccolo e semplice pacchetto \LaTeX\xspace per disegnare la famiglia dei paperi con TikZ :)
+
+\section{Utilizzo}
+	\Needspace{6\baselineskip}
+	Il pacchetto \pkgname fornisce un comando \cs{papero}. Di default viene disegnato \mbox{Peppone}:
+	\begin{example}
+\begin{tikzpicture}
+	\papero
+\end{tikzpicture}
+	\end{example}
+	
+	\Needspace{6\baselineskip}
+	È possibile specificare quale papero disegnare e applicare le classiche opzioni TikZ per dimensione, posizione o altre trasformazioni:
+	\begin{example}
+\begin{tikzpicture}
+	\papero[peppone]
+	\papero[piumotta,scale=0.5,shift={(6,0)}]
+	\papero[peppe,scale=0.8,shift={(7,0)}]
+	\papero[otto,scale=0.5,shift={(17,0)}]
+\end{tikzpicture}
+	\end{example}
+	
+	\Needspace{6\baselineskip}
+	Solo alcuni dei paperi sono definiti (quelli dell'esempio precedente). Però è possibile definire un nuovo papero col comando \cs{newpapero} specificando in HTML i suoi due colori:
+	\begin{example}
+\newpapero{piumina}{ffc0cb}{8aff88}
+\begin{tikzpicture}
+\papero[piumina]
+\end{tikzpicture}
+	\end{example}
+	
+	\Needspace{6\baselineskip}
+	In alternativa è possibile specificare i due colori (non necessariamente in HTML, qui) e anche quelli di occhi e nastrino (che è anche possibile nascondere):
+	\begin{example}
+\begin{tikzpicture}
+\papero[% senza indentazione, vedi "problemi noti"
+primary=pink,%
+secondary=green,%
+ribboncolor=cyan,%
+eyecolor=cyan%
+]
+
+% Piumotta con nastrino rosa
+\papero[piumotta,ribboncolor=pink,shift={(4,0)}]
+
+% Peppone senza nastrino
+\papero[peppone,no ribbon,shift={(8,0)}]
+\end{tikzpicture}
+	\end{example}
+	
+	\Needspace{16\baselineskip}
+	Oltre alla visuale principale (dall'alto) ne sono disponibili altre:
+	\begin{example}
+\begin{tikzpicture}
+	\papero[peppone,top]
+	\papero[peppone,front,shift={(3.2,0)}]
+	\papero[piumotta,tophead,shift={(6,0)}]
+	\papero[piumotta,lowerhead,shift={(9,0)}]
+	% posa intenzionalmente meno "simmetrica"
+	\papero[peppone,natural,shift={(4.7,-4)}]
+\end{tikzpicture}
+	\end{example}
+	
+\section{Problemi noti}
+	Potrebbero esserci ancora alcuni problemi non del tutto risolti quando viene usato il comando \cs{newpapero} in un ambiente che crea un gruppo.\\
+	Non è possibile spezzare le opzioni su più righe e indentarle. Se si spezzano le opzioni su più righe è necessario mettere un \% alla fine di ogni riga e fare iniziare la seguente all'inizio della riga stessa, senza spazi.
+\end{document}
